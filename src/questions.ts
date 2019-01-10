@@ -42,8 +42,7 @@ const questions: Questions<Answers> = [
     message: 'Turn off the screen or put your device on sleep mode?',
     type: 'list',
     choices: [
-      { name: 'Turn off the screen', value: 'off' },
-      { name: 'Sleep mode', value: 'sleep' },
+      { name: 'Turn off the screens', value: 'off' },
       { name: 'No thanks', value: 'no' },
     ],
   },

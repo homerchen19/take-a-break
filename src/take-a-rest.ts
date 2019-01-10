@@ -6,6 +6,7 @@ import chalk from 'chalk';
 import prettyMs from 'pretty-ms';
 import { getQuote } from 'inspirational-quotes';
 import Player from 'play-sound';
+import stayAwake from 'stay-awake';
 
 import questions from './questions';
 import turnOffScreen from './turnOffScreen';
@@ -18,13 +19,16 @@ const alarmFilePath = path.resolve(__dirname, './media/analog-watch.mp3');
   const { time, other, device } = await inquirer.prompt(questions);
   const minutes = time === -99 && other ? other : time;
 
+  stayAwake.prevent(err => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
   switch (device) {
     case 'off': {
       turnOffScreen();
 
-      break;
-    }
-    case 'sleep': {
       break;
     }
     default:
@@ -35,7 +39,7 @@ const alarmFilePath = path.resolve(__dirname, './media/analog-watch.mp3');
 
   console.log();
 
-  const duration = minutes * 60 * 1000;
+  const duration = minutes * 10 * 1000;
   const spinner = ora({
     text: prettyMs(duration, { secDecimalDigits: 0 }),
     spinner: 'clock',
@@ -79,5 +83,11 @@ const alarmFilePath = path.resolve(__dirname, './media/analog-watch.mp3');
     console.log(quoteTable.toString());
     console.log();
     console.log();
+
+    stayAwake.allow(err => {
+      if (err) {
+        console.error(err);
+      }
+    });
   });
 })().catch(() => console.error('oops, something wrong'));
