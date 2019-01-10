@@ -1,19 +1,25 @@
-import typescript from 'rollup-plugin-typescript2'
-import { terser } from 'rollup-plugin-terser'
+import typescript from 'rollup-plugin-typescript2';
+import { terser } from 'rollup-plugin-terser';
 
-const pkg = require('./package.json')
-
-const libraryName = 'take-a-rest'
+const pkg = require('./package.json');
 
 export default {
-  input: `src/${libraryName}.ts`,
-  output: [{ file: pkg.main, name: 'cli', format: 'cjs' }],
+  input: `src/${pkg.name}.ts`,
+  output: [
+    {
+      file: pkg.main,
+      name: 'cli',
+      format: 'cjs',
+      banner: '#!/usr/bin/env node',
+    },
+  ],
   watch: {
-    include: 'src/**'
+    include: 'src/**',
   },
   external: [
     ...Object.keys(pkg.dependencies || {}),
-    ...Object.keys(pkg.peerDependencies || {})
+    ...Object.keys(pkg.peerDependencies || {}),
   ],
-  plugins: [typescript({ useTsconfigDeclarationDir: true }), terser()]
-}
+
+  plugins: [typescript({ useTsconfigDeclarationDir: true }), terser()],
+};
