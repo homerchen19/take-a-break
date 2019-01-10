@@ -1,6 +1,12 @@
 import inquirer, { Questions } from 'inquirer';
 import turnOffDisplay from 'turn-off-display';
 import Timer from 'tiny-timer';
+import ora from 'ora';
+import chalk from 'chalk';
+import prettyMs from 'pretty-ms';
+import { getQuote } from 'inspirational-quotes';
+
+import quoteTable from './quoteTable';
 
 interface Answers {
   time: number;
@@ -69,13 +75,49 @@ const questions: Questions<Answers> = [
     }
   }
 
-  timer.start(minutes * 60 * 1000);
+  const duration = minutes * 5 * 1000;
+
+  console.log();
+
+  const spinner = ora({
+    text: prettyMs(duration, { secDecimalDigits: 0 }),
+    spinner: 'clock',
+    interval: 80,
+  }).start();
+
+  timer.start(duration);
 
   timer.on('tick', currentTime => {
-    console.log(Math.round(currentTime / 1000));
+    spinner.text = prettyMs(currentTime, {
+      secDecimalDigits: 0,
+    });
   });
 
   timer.on('done', () => {
-    console.log("time's up");
+    spinner.succeed(chalk.bold("Time's up"));
+
+    console.log();
+
+    const { text, author } = getQuote();
+
+    quoteTable.push(
+      [
+        {
+          content: `”${text}”`,
+          hAlign: 'center',
+          vAlign: 'center',
+        },
+      ],
+      [
+        {
+          content: `- ${chalk.bold.italic(author)}`,
+          hAlign: 'right',
+        },
+      ]
+    );
+
+    console.log(quoteTable.toString());
+    console.log();
+    console.log();
   });
 })().catch(() => console.error('oops, something wrong'));
