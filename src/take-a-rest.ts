@@ -1,3 +1,4 @@
+import path from 'path';
 import inquirer, { Questions } from 'inquirer';
 import turnOffDisplay from 'turn-off-display';
 import Timer from 'tiny-timer';
@@ -5,8 +6,12 @@ import ora from 'ora';
 import chalk from 'chalk';
 import prettyMs from 'pretty-ms';
 import { getQuote } from 'inspirational-quotes';
+import Player from 'play-sound';
 
 import quoteTable from './quoteTable';
+
+const player = Player();
+const alarmFilePath = path.resolve(__dirname, './media/analog-watch.mp3');
 
 interface Answers {
   time: number;
@@ -75,7 +80,7 @@ const questions: Questions<Answers> = [
     }
   }
 
-  const duration = minutes * 5 * 1000;
+  const duration = minutes * 60 * 1000;
 
   console.log();
 
@@ -96,14 +101,16 @@ const questions: Questions<Answers> = [
   timer.on('done', () => {
     spinner.succeed(chalk.bold("Time's up"));
 
-    console.log();
+    player.play(alarmFilePath, err => {
+      if (err) console.error(`Could not play sound: ${err}`);
+    });
 
     const { text, author } = getQuote();
 
     quoteTable.push(
       [
         {
-          content: `”${text}”`,
+          content: `” ${text} ”`,
           hAlign: 'center',
           vAlign: 'center',
         },
@@ -116,6 +123,7 @@ const questions: Questions<Answers> = [
       ]
     );
 
+    console.log();
     console.log(quoteTable.toString());
     console.log();
     console.log();

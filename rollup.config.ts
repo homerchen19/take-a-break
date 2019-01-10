@@ -1,5 +1,6 @@
 import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
+import copy from 'rollup-plugin-copy';
 
 const pkg = require('./package.json');
 
@@ -21,5 +22,11 @@ export default {
     ...Object.keys(pkg.peerDependencies || {}),
   ],
 
-  plugins: [typescript({ useTsconfigDeclarationDir: true }), terser()],
+  plugins: [
+    typescript({ useTsconfigDeclarationDir: true }),
+    terser(),
+    copy({
+      'src/media': 'dist/media',
+    }),
+  ],
 };
