@@ -16,7 +16,7 @@ const player = Player();
 const alarmFilePath = path.resolve(__dirname, './media/analog-watch.mp3');
 (async function() {
   const timer = new Timer();
-  const { time, other, device } = await inquirer.prompt(questions);
+  const { time, other, turnOff } = await inquirer.prompt(questions);
   const minutes = time === -99 && other ? other : time;
 
   stayAwake.prevent(err => {
@@ -25,21 +25,13 @@ const alarmFilePath = path.resolve(__dirname, './media/analog-watch.mp3');
     }
   });
 
-  switch (device) {
-    case 'off': {
-      turnOffScreen();
-
-      break;
-    }
-    default:
-    case 'no': {
-      break;
-    }
+  if (turnOff) {
+    turnOffScreen();
   }
 
   console.log();
 
-  const duration = minutes * 10 * 1000;
+  const duration = minutes * 60 * 1000;
   const spinner = ora({
     text: prettyMs(duration, { secDecimalDigits: 0 }),
     spinner: 'clock',

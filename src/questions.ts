@@ -3,7 +3,7 @@ import { Questions } from 'inquirer';
 interface Answers {
   time: number;
   other: number;
-  device: string;
+  turnOff: boolean;
 }
 
 const questions: Questions<Answers> = [
@@ -38,12 +38,12 @@ const questions: Questions<Answers> = [
     },
   },
   {
-    name: 'device',
-    message: 'Turn off the screen or put your device on sleep mode?',
+    name: 'turnOff',
+    message: 'Turn the screen off?',
     type: 'list',
     choices: [
-      { name: 'Turn off the screens', value: 'off' },
-      { name: 'No thanks', value: 'no' },
+      { name: 'Yes please', value: true },
+      { name: 'No thanks', value: false },
     ],
   },
 ];
