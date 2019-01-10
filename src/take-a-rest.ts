@@ -1,6 +1,5 @@
 import path from 'path';
-import inquirer, { Questions } from 'inquirer';
-import turnOffDisplay from 'turn-off-display';
+import inquirer from 'inquirer';
 import Timer from 'tiny-timer';
 import ora from 'ora';
 import chalk from 'chalk';
@@ -8,59 +7,12 @@ import prettyMs from 'pretty-ms';
 import { getQuote } from 'inspirational-quotes';
 import Player from 'play-sound';
 
+import questions from './questions';
+import turnOffScreen from './turnOffScreen';
 import quoteTable from './quoteTable';
 
 const player = Player();
 const alarmFilePath = path.resolve(__dirname, './media/analog-watch.mp3');
-
-interface Answers {
-  time: number;
-  other: number;
-  device: string;
-}
-
-const questions: Questions<Answers> = [
-  {
-    name: 'time',
-    message: 'How long?',
-    type: 'list',
-    default: 2,
-    choices: [
-      { name: '5 mins', value: 5 },
-      { name: '10 mins', value: 10 },
-      { name: '15 mins', value: 15 },
-      { name: '20 mins', value: 20 },
-      { name: '30 mins', value: 30 },
-      { name: 'other', value: -99 },
-    ],
-  },
-  {
-    name: 'other',
-    message: 'How many minutes?',
-    type: 'input',
-    when: (answers: Answers): boolean => answers.time === -99,
-    validate: (input: string): boolean | string => {
-      if (Number(input) && Number(input) > 0) {
-        return true;
-      }
-
-      return 'Please provide a positive number';
-    },
-    filter: (input: string): number => {
-      return Number(input);
-    },
-  },
-  {
-    name: 'device',
-    message: 'Turn off the screen or put your device on sleep mode?',
-    type: 'list',
-    choices: [
-      { name: 'Turn off the screen', value: 'off' },
-      { name: 'Sleep mode', value: 'sleep' },
-      { name: 'No thanks', value: 'no' },
-    ],
-  },
-];
 (async function() {
   const timer = new Timer();
   const { time, other, device } = await inquirer.prompt(questions);
@@ -68,7 +20,8 @@ const questions: Questions<Answers> = [
 
   switch (device) {
     case 'off': {
-      turnOffDisplay();
+      turnOffScreen();
+
       break;
     }
     case 'sleep': {
@@ -80,10 +33,9 @@ const questions: Questions<Answers> = [
     }
   }
 
-  const duration = minutes * 60 * 1000;
-
   console.log();
 
+  const duration = minutes * 60 * 1000;
   const spinner = ora({
     text: prettyMs(duration, { secDecimalDigits: 0 }),
     spinner: 'clock',
