@@ -3,9 +3,9 @@ import chalk from 'chalk';
 import turnOffDisplay from 'turn-off-display';
 
 const turnOffTimer = new Timer();
-const turnOffDuration = 5000;
+const turnOffDuration: number = 5000;
 
-const turnOffScreen = () => {
+const turnOffScreen = (): void => {
   console.log();
   console.log(
     chalk.bgYellow.bold('The screens will be turn off in 5 seconds.')

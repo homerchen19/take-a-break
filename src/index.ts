@@ -13,7 +13,10 @@ import turnOffScreen from './turnOffScreen';
 import quoteTable from './quoteTable';
 
 const player = Player();
-const alarmFilePath = path.resolve(__dirname, './media/analog-watch.mp3');
+const alarmFilePath: string = path.resolve(
+  __dirname,
+  './media/analog-watch.mp3'
+);
 (async function() {
   const timer = new Timer();
   const { time, other, turnOff } = await inquirer.prompt(questions);
@@ -31,7 +34,7 @@ const alarmFilePath = path.resolve(__dirname, './media/analog-watch.mp3');
 
   console.log();
 
-  const duration = minutes * 60 * 1000;
+  const duration: number = minutes * 60 * 1000;
   const spinner = ora({
     text: prettyMs(duration, { secDecimalDigits: 0 }),
     spinner: 'clock',
@@ -46,40 +49,43 @@ const alarmFilePath = path.resolve(__dirname, './media/analog-watch.mp3');
     });
   });
 
-  timer.on('done', () => {
-    spinner.succeed(chalk.bold("Time's up"));
+  timer.on(
+    'done',
+    (): void => {
+      spinner.succeed(chalk.bold("Time's up"));
 
-    player.play(alarmFilePath, err => {
-      if (err) console.error(`Could not play sound: ${err}`);
-    });
+      player.play(alarmFilePath, err => {
+        if (err) console.error(`Could not play sound: ${err}`);
+      });
 
-    const { text, author } = getQuote();
+      const { text, author } = getQuote();
 
-    quoteTable.push(
-      [
-        {
-          content: `” ${text} ”`,
-          hAlign: 'center',
-          vAlign: 'center',
-        },
-      ],
-      [
-        {
-          content: `- ${chalk.bold.italic(author)}`,
-          hAlign: 'right',
-        },
-      ]
-    );
+      quoteTable.push(
+        [
+          {
+            content: `” ${text} ”`,
+            hAlign: 'center',
+            vAlign: 'center',
+          },
+        ],
+        [
+          {
+            content: `- ${chalk.bold.italic(author)}`,
+            hAlign: 'right',
+          },
+        ]
+      );
 
-    console.log();
-    console.log(quoteTable.toString());
-    console.log();
-    console.log();
+      console.log();
+      console.log(quoteTable.toString());
+      console.log();
+      console.log();
 
-    stayAwake.allow(err => {
-      if (err) {
-        console.error(err);
-      }
-    });
-  });
-})().catch(() => console.error('oops, something wrong'));
+      stayAwake.allow(err => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    }
+  );
+})().catch((): void => console.error('oops, something wrong'));
