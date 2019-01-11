@@ -17,7 +17,8 @@ const alarmFilePath: string = path.resolve(
   __dirname,
   './media/analog-watch.mp3'
 );
-(async function() {
+
+const main = async () => {
   const timer = new Timer();
   const { time, other, turnOff } = await inquirer.prompt(questions);
   const minutes = time === -99 && other ? other : time;
@@ -33,6 +34,7 @@ const alarmFilePath: string = path.resolve(
   }
 
   console.log();
+  console.log(chalk.bold.green('Time remaining: '));
 
   const duration: number = minutes * 60 * 1000;
   const spinner = ora({
@@ -76,7 +78,6 @@ const alarmFilePath: string = path.resolve(
         ]
       );
 
-      console.log();
       console.log(quoteTable.toString());
       console.log();
       console.log();
@@ -88,4 +89,6 @@ const alarmFilePath: string = path.resolve(
       });
     }
   );
-})().catch((): void => console.error('oops, something wrong'));
+};
+
+export default main;

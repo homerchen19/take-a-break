@@ -5,7 +5,7 @@ import copy from 'rollup-plugin-copy';
 const pkg = require('./package.json');
 
 export default {
-  input: `src/index.ts`,
+  input: `src/cli.ts`,
   output: [
     {
       file: pkg.main,
