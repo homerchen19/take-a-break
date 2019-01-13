@@ -1,20 +1,26 @@
 {
-  "name": "take-a-rest",
+  "name": "take-a-break",
   "version": "0.0.0",
-  "description": "",
-  "keywords": [],
+  "description": "Set an alarm clock then go take a break.",
+  "keywords": [
+    "alarm",
+    "break",
+    "cli"
+  ],
   "main": "dist/cli.js",
   "bin": {
-    "take-a-rest": "dist/cli.js"
+    "take-a-break": "dist/cli.js"
   },
-  "typings": "dist/types/take-a-rest.d.ts",
   "files": [
     "dist"
   ],
   "author": "xxhomey19 <xxhomey19@gmail.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/xxhomey19/take-a-break/tree/master"
+  },
+  "bugs": {
+    "url": "https://github.com/xxhomey19/take-a-break/issues"
   },
   "license": "MIT",
   "engines": {
@@ -75,9 +81,7 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
-    "cli-table3": "^0.5.1",
     "inquirer": "^6.2.1",
-    "inspirational-quotes": "^1.0.5",
     "ora": "^3.0.0",
     "play-sound": "^1.1.3",
     "pretty-ms": "^4.0.0",

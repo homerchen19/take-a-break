@@ -4,13 +4,11 @@ import Timer from 'tiny-timer';
 import ora from 'ora';
 import chalk from 'chalk';
 import prettyMs from 'pretty-ms';
-import { getQuote } from 'inspirational-quotes';
 import Player from 'play-sound';
 import stayAwake from 'stay-awake';
 
 import questions from './questions';
 import turnOffScreen from './turnOffScreen';
-import quoteTable from './quoteTable';
 
 const player = Player();
 const alarmFilePath: string = path.resolve(
@@ -36,7 +34,7 @@ const main = async () => {
   console.log();
   console.log(chalk.bold.green('Time remaining: '));
 
-  const duration: number = minutes * 60 * 1000;
+  const duration: number = minutes * 10 * 1000;
   const spinner = ora({
     text: prettyMs(duration, { secDecimalDigits: 0 }),
     spinner: 'clock',
@@ -55,32 +53,11 @@ const main = async () => {
     'done',
     (): void => {
       spinner.succeed(chalk.bold("Time's up"));
+      console.log();
 
       player.play(alarmFilePath, err => {
         if (err) console.error(`Could not play sound: ${err}`);
       });
-
-      const { text, author } = getQuote();
-
-      quoteTable.push(
-        [
-          {
-            content: `” ${text} ”`,
-            hAlign: 'center',
-            vAlign: 'center',
-          },
-        ],
-        [
-          {
-            content: `- ${chalk.bold.italic(author)}`,
-            hAlign: 'right',
-          },
-        ]
-      );
-
-      console.log(quoteTable.toString());
-      console.log();
-      console.log();
 
       stayAwake.allow(err => {
         if (err) {
