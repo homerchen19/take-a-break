@@ -34,7 +34,7 @@ const main = async () => {
   console.log();
   console.log(chalk.bold.green('Time remaining: '));
 
-  const duration: number = minutes * 10 * 1000;
+  const duration: number = minutes * 60 * 1000;
   const spinner = ora({
     text: prettyMs(duration, { secDecimalDigits: 0 }),
     spinner: 'clock',
